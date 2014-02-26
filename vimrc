@@ -11,8 +11,10 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " My bundles here:
-NeoBundle 'Shougo/unite.vim'
+NeoBundle 'kien/ctrlp.vim'
+" NeoBundle 'vim-scripts/AutoClose'
 NeoBundle 'mileszs/ack.vim'
+NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'bling/vim-airline'
@@ -31,8 +33,6 @@ NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundleCheck
 
 """ Plugins config
-" unite
-nnoremap <C-p> :Unite file_rec/async<cr>
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -82,8 +82,14 @@ set laststatus=2                  " Show the status line all the time
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
-colorscheme lucius
-LuciusBlackLowContrast
+" Solarized stuff
+set background=light
+colorscheme solarized
+
+" Diferentiate between INSERT and NORMAL mode with insert line
+set cursorline
+autocmd InsertEnter * set cursorline! 
+autocmd InsertLeave * set cursorline
 
 " Tab mappings.
 " map <leader>tt :tabnew<cr>
@@ -98,8 +104,11 @@ LuciusBlackLowContrast
 
 " Mappings custom 
 " tab for auto complete
-imap <Tab> <C-N> 
-
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 " progaming language number of tabs
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 
