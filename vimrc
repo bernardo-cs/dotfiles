@@ -9,11 +9,10 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
-" NeoBundle 'vim-scripts/AutoClose'
 NeoBundle 'mileszs/ack.vim'
+NeoBundle 'sjl/vitality.vim'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'tpope/vim-endwise'
@@ -104,6 +103,13 @@ autocmd InsertLeave * set cursorline
 
 " Mappings custom 
 " tab for auto complete
+imap <Tab> <C-P>
+" Autocomplete will pull from keywords in the current file, other buffers (closed or still
+" open), and from the current tags file
+set complete=.,b,u,]
+" Closest to zsh completion
+set wildmode=longest,list:longest
+
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
