@@ -13,7 +13,7 @@ PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
 # time that oh-my-zsh is loaded.
 ZSH_THEME="agnoster"
 DEFAULT_USER="bersimoes"
-
+export "EDITOR=vim"
 #add z
 . ~/Documents/coding/z/z.sh
 
