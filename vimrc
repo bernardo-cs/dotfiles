@@ -1,18 +1,21 @@
-" Example Vim configurajonathanfi-luciueistion.
-" Copy or symlink to ~/.vimrc or ~/_vimrc.
+""" Example Vim configurajonathanfi-luciueistion.
+"" Copy or symlink to ~/.vimrc or ~/_vimrc.
 
-""""  NeoBundle Config 
+"""""  NeoBundle Config 
 if has('vim_starting')
   set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-
 call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'roman/golden-ratio'
+NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
+NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'tpope/vim-endwise'
@@ -104,14 +107,21 @@ autocmd InsertLeave * set cursorline
 " Mappings custom 
 " tab for auto complete
 imap <Tab> <C-P>
+" press jk in insert mode to enter command mode 
+imap jk <c-c>
 " Autocomplete will pull from keywords in the current file, other buffers (closed or still
 " open), and from the current tags file
 set complete=.,b,u,]
 " Closest to zsh completion
 set wildmode=longest,list:longest
 
+" Navigate open buffers
+"let g:ctrlp_map = '<c-q>'
+"let g:ctrlp_cmd = 'CtrlPBuffer'
+"" Navigate files
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux

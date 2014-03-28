@@ -4,6 +4,7 @@ PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 ZSH=$HOME/.oh-my-zsh
 # Add bash aliases to zsh
 source $HOME/.bash_aliases
+source $HOME/.apikeys
 # Add php55 form homebrew
 #PATH="$(brew --prefix josegonzalez/php/php55)/bin:$PATH"
 PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
@@ -74,3 +75,4 @@ predict-toggle() {
   zstyle ':predict' toggle true
   zstyle ':predict' verbose true
 # set colors
+function gi() { curl http://www.gitignore.io/api/$@ ;}
