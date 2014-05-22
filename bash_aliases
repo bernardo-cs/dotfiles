@@ -1,11 +1,5 @@
-alias easy_install_pypy='/usr/local/share/pypy/easy_install'
-alias coding='cd /Users/bersimoes/Documents/Coding/'
-alias coche='cd /Users/bersimoes/Documents/Coding/coche/'
 alias art='php artisan'
-alias tese='cd /Volumes/vinil/Dropbox/IST/Tese/'
-alias rorcn='ssh -i cn.pem ec2-user@ec2-54-247-3
-4-217.eu-west-1.compute.amazonaws.com -l ec2-user'
 alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
-alias ist='cd /Volumes/vinil/Dropbox/IST/'
 alias chrome='open -a Google\ Chrome\ Canary'
 alias pbcopyt='reattach-to-user-namespace pbcopy'
+alias vi="vim"

@@ -11,6 +11,12 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
+
+" UtilSnipets
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'honza/vim-snippets'
+
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
@@ -35,6 +41,30 @@ NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundleCheck
 
 """ Plugins config
+" UtiSnips
+" Trigger configuration. Do not use <tab> if you use
+let g:UltiSnipsExpandTrigger       = "<tab>"
+let g:UltiSnipsJumpForwardTrigger  = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsSnippetDirectories  = ["snips"]
+
+" Tab resolution bettween ultisnips and ycm
+function! g:UltiSnips_Complete()
+  call UltiSnips#ExpandSnippet()
+  if g:ulti_expand_res == 0
+    if pumvisible()
+      return "\<C-n>"
+    else
+      call UltiSnips#JumpForwards()
+      if g:ulti_jump_forwards_res == 0
+        return "\<TAB>"
+      endif
+    endif 
+  endif
+  return ""
+endfunction
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -75,14 +105,26 @@ set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 
 set nofoldenable
 set foldmethod=syntax
-" UNCOMMENT TO USE
-"set tabstop=2                    " Global tab width.
-"set shiftwidth=2                 " And again, related.
+
+set virtualedit=all             " because blocks rock
+
+set cpoptions+=$                  " Visual help for change word cw
+
+set tabstop=2                    " Global tab width.
+set shiftwidth=2                 " And again, related.
 set expandtab                    " Use spaces instead of tabs
 
 set laststatus=2                  " Show the status line all the time
 " Useful status information at bottom of screen
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
+
+" Ignore temp and bin files
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " Linux/MacOSX"
+set wildignore+=tmp,.tags
+set wildignore+=*.gif,*.jpg,*.png
+" Ignore images in rails apps, and vendored files
+set wildignore+=public/images
+set wildignore+=vendor
 
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 " Solarized stuff
@@ -107,7 +149,7 @@ autocmd InsertLeave * set cursorline
 
 " Mappings custom 
 " tab for auto complete
-imap <Tab> <C-P>
+"imap <Tab> <C-P>
 " press jk in insert mode to enter command mode 
 imap jk <c-c>
 " Autocomplete will pull from keywords in the current file, other buffers (closed or still
