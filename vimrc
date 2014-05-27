@@ -177,3 +177,26 @@ autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
  autocmd FileType ruby setlocal foldmethod=syntax
  autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
+set relativenumber        " toggle relative line numbers
+
+" ctrl-n shortcut to toggle between relative and absolute line numbers
+"function! NumberToggle()
+  "if(&relativenumber == 1)
+    "set number
+  "else
+    "set relativenumber
+  "endif
+"endfunc
+
+"nnoremap <C-n> :call NumberToggle()<cr>
+
+" Switch to absolute line numbers when vim loses focus
+:au FocusLost * :set number
+:au FocusGained * :set relativenumber
+
+" Switch to absolute line numbers when in insert mode
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber
+
+" reduce esc  key lag
+set timeoutlen=1000 ttimeoutlen=0
