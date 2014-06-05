@@ -12,11 +12,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
 
-" UtilSnipets
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'honza/vim-snippets'
-
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
@@ -38,6 +36,7 @@ NeoBundle 'Shougo/vimproc', {
       \    },
       \ }
 NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'gioele/vim-autoswap'
 " Check for uninstalled bundles
 NeoBundleCheck
 
@@ -105,7 +104,7 @@ set nowritebackup                 " And again.
 set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 
 set nofoldenable
-set foldmethod=syntax
+set foldmethod=indent
 
 set virtualedit=all             " because blocks rock
 
@@ -118,14 +117,6 @@ set expandtab                    " Use spaces instead of tabs
 set laststatus=2                  " Show the status line all the time
 " Useful status information at bottom of screen
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
-
-" Ignore temp and bin files
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " Linux/MacOSX"
-set wildignore+=tmp,.tags
-set wildignore+=*.gif,*.jpg,*.png
-" Ignore images in rails apps, and vendored files
-set wildignore+=public/images
-set wildignore+=vendor
 
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 " Solarized stuff
@@ -165,10 +156,9 @@ set wildmode=longest,list:longest
 "" Navigate files
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+"let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 " progaming language number of tabs
 autocmd Filetype r setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
@@ -200,3 +190,14 @@ autocmd InsertLeave * :set relativenumber
 
 " reduce esc  key lag
 set timeoutlen=1000 ttimeoutlen=0
+
+" Speed up screen drawing
+ " Syntax coloring lines that are too long just slows down the world
+set synmaxcol=128
+set ttyfast " u got a fast terminal
+set ttyscroll=3
+set lazyredraw " to avoid scrolling problems
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
