@@ -19,13 +19,13 @@ NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
 NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
-NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
@@ -192,7 +192,7 @@ autocmd InsertLeave * :set relativenumber
 set timeoutlen=1000 ttimeoutlen=0
 
 " Speed up screen drawing
- " Syntax coloring lines that are too long just slows down the world
+" Syntax coloring lines that are too long just slows down the world
 set synmaxcol=128
 set ttyfast " u got a fast terminal
 set ttyscroll=3
@@ -201,3 +201,7 @@ set lazyredraw " to avoid scrolling problems
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
+" Auto save evrey 4 seconds in normal mode 
+au CursorHold <buffer> :update
+" Save when leaving insert mode
+inoremap <Esc> <Esc>:w<CR>
