@@ -11,7 +11,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
-
+NeoBundle 'danchoi/ri.vim'
+NeoBundle 'godlygeek/tabular'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'honza/vim-snippets'
@@ -205,3 +206,30 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 au CursorHold <buffer> :update
 " Save when leaving insert mode
 inoremap <Esc> <Esc>:w<CR>
+
+" Auto remove trailing whitespace
+fun! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+" VIM-Latex specific
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+"set wildignore+=*.log,*.aux,*.dvi,*.aut,*.aux,*.bbl,*.blg,*.dvi,*.fff,*.log,*.out,*.pdf,*.ps,*.toc,*.ttt,*.m*,*.lo*,*.eps,*.sty,*.backupn
+
+" Set spelling language.
+"nmap <silent> <leader>d :setlocal spell! spelllang=en_us<CR>
+"set spelllang=en_gb
+
+" set default register to the clipboard
+set clipboard=unnamed                    
+
+" f5 opens buffer list
+nnoremap <F5> :buffers<CR>:buffer<Space>

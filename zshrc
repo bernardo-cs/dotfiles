@@ -19,7 +19,7 @@ eval "$(rbenv init -)"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Add bash aliases to zsh
+# Add bash aliases, and API keys to zsh
 source $HOME/.bash_aliases
 source $HOME/.apikeys
  
@@ -52,4 +52,3 @@ zle -N zle-keymap-select
 # this fixes it
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
