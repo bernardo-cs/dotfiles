@@ -1,3 +1,4 @@
- --ignore-file=ext:orig
- --ignore-file=ext:backup
- --ignore-file=ext:log
+--ignore-file=is:tags
+--ignore-file=ext:orig
+--ignore-file=ext:backup
+--ignore-file=ext:log
