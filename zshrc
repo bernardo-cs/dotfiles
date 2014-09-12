@@ -13,7 +13,8 @@ export "EDITOR=vim"
 . /src/clones/z/z.sh
 
 #add rbenv
-eval "$(rbenv init -)"
+eval "$(rbenv init - --no-rehash)"
+#eval "$(rbenv init -)"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -25,7 +26,7 @@ source $HOME/.apikeys
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git rails ruby brew zsh-syntax-highlighting history-substring-search)
+plugins=(git rails ruby brew bundler rbenv zsh-syntax-highlighting history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 #seting up locals for utf8

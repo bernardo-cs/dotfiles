@@ -21,6 +21,7 @@ NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
 NeoBundle 'tpope/vim-eunuch'
 NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'tpope/vim-obsession'             "session management
 NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jonathanfilip/vim-lucius'
@@ -70,6 +71,7 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=
 set nocompatible                  " Must come first because it changes other options.
 
 syntax on                         " Turn on syntax highlighting.
+syntax spell toplevel             " check syntaxe correctly on latex files
 filetype plugin indent on         " Turn on file type detection.
 
 runtime macros/matchit.vim        " Load the matchit plugin.
@@ -152,8 +154,8 @@ set complete=.,b,u,]
 set wildmode=longest,list:longest
 
 " Navigate open buffers
-"let g:ctrlp_map = '<c-q>'
-"let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_map = '<c-q>'
+let g:ctrlp_cmd = 'CtrlPBuffer'
 "" Navigate files
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -194,10 +196,11 @@ set timeoutlen=1000 ttimeoutlen=0
 
 " Speed up screen drawing
 " Syntax coloring lines that are too long just slows down the world
-set synmaxcol=128
+"set synmaxcol=128
 set ttyfast " u got a fast terminal
 set ttyscroll=3
 set lazyredraw " to avoid scrolling problems
+set re=1 "set regex engine to older one, might speedup vim
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
@@ -223,10 +226,6 @@ autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 "set wildignore+=*.log,*.aux,*.dvi,*.aut,*.aux,*.bbl,*.blg,*.dvi,*.fff,*.log,*.out,*.pdf,*.ps,*.toc,*.ttt,*.m*,*.lo*,*.eps,*.sty,*.backupn
-
-" Set spelling language.
-"nmap <silent> <leader>d :setlocal spell! spelllang=en_us<CR>
-"set spelllang=en_gb
 
 " set default register to the clipboard
 set clipboard=unnamed                    
