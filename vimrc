@@ -38,7 +38,6 @@ NeoBundle 'Shougo/vimproc', {
       \    },
       \ }
 NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'gioele/vim-autoswap'
 " Check for uninstalled bundles
 NeoBundleCheck
 
@@ -205,11 +204,6 @@ set re=1 "set regex engine to older one, might speedup vim
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
-" Auto save evrey 4 seconds in normal mode 
-au CursorHold <buffer> :update
-" Save when leaving insert mode
-inoremap <Esc> <Esc>:w<CR>
-
 " Auto remove trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
   let l = line(".")
@@ -230,5 +224,26 @@ let g:tex_flavor='latex'
 " set default register to the clipboard
 set clipboard=unnamed                    
 
-" f5 opens buffer list
-nnoremap <F5> :buffers<CR>:buffer<Space>
+" stop swap files
+set nobackup
+set nowritebackup
+set noswapfile
+
+"""""""""""""""""""""""""""""""""""""""""""
+""""""     Personal shortcuts       """""""
+"""""""""""""""""""""""""""""""""""""""""""
+"
+" Replace current selected text, on current buffer
+nnoremap <leader>r :%s///g<left><left>
+
+" Opens buffer list
+nnoremap <leader>b :buffers<CR>:buffer<Space>
+
+" Save all buffers
+nnoremap <leader>ss :wa<CR>
+
+" Save all buffers and quit
+nnoremap <leader>sq :xa<CR>
+
+" Quit all, not if there are unsaved changes
+nnoremap <leader>qq :qa<CR>
