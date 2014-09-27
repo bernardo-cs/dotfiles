@@ -11,10 +11,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
-NeoBundle 'danchoi/ri.vim'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
@@ -24,8 +22,8 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-obsession'             "session management
 NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'tpope/vim-endwise'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
 NeoBundle 'tpope/vim-surround'
@@ -37,35 +35,9 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
-NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'ervandew/supertab'
 " Check for uninstalled bundles
 NeoBundleCheck
-
-""" Plugins config
-" UtiSnips
-" Trigger configuration. Do not use <tab> if you use
-let g:UltiSnipsExpandTrigger       = "<tab>"
-let g:UltiSnipsJumpForwardTrigger  = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsSnippetDirectories  = ["snips"]
-
-" Tab resolution bettween ultisnips and ycm
-function! g:UltiSnips_Complete()
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips#JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif 
-  endif
-  return ""
-endfunction
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -229,6 +201,16 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+"" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 """""""""""""""""""""""""""""""""""""""""""
 """"""     Personal shortcuts       """""""
 """""""""""""""""""""""""""""""""""""""""""
@@ -247,3 +229,7 @@ nnoremap <leader>sq :xa<CR>
 
 " Quit all, not if there are unsaved changes
 nnoremap <leader>qq :qa<CR>
+
+" Use enter, and shift enter to add a new line in exec mode
+nmap <S-Enter> O<Esc>j
+nmap <CR> o<Esc>k

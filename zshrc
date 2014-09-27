@@ -13,8 +13,9 @@ export "EDITOR=vim"
 . /src/clones/z/z.sh
 
 #add rbenv
-eval "$(rbenv init - --no-rehash)"
-#eval "$(rbenv init -)"
+#eval "$(rbenv init - --no-rehash)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
