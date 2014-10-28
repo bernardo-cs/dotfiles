@@ -9,6 +9,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
+NeoBundle 'wting/rust.vim'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
@@ -34,7 +35,6 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
-NeoBundle 'ervandew/supertab'
 " Check for uninstalled bundles
 call neobundle#end()
 filetype plugin indent on
@@ -43,6 +43,7 @@ NeoBundleCheck
 set nocompatible                  " Must come first because it changes other options.
 
 syntax on                         " Turn on syntax highlighting.
+set spell spelllang=en_us         " Turns on spellcheker
 syntax spell toplevel             " check syntaxe correctly on latex files
 filetype plugin indent on         " Turn on file type detection.
 
@@ -202,35 +203,91 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-"" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" Let ultisnippets split my screen
+let g:UltiSnipsEditSplit="vertical"
 
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsExpandTrigger       = "<tab>"
+let g:UltiSnipsJumpForwardTrigger  = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsSnippetDirectories  = ["snips"]
+
+""" make YCM compatible with UltiSnips 
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+
+
 
 """""""""""""""""""""""""""""""""""""""""""
 """"""     Personal shortcuts       """""""
 """""""""""""""""""""""""""""""""""""""""""
-"
-" Replace current selected text, on current buffer
-nnoremap <leader>r :%s///g<left><left>
 
+"""
+""" Search and Replace
+"""
+" Replace current selected text, on current buffer
+nnoremap <leader>sr :%s///g<left><left>
+
+"""
+""" Buffer Manipulation
+"""
 " Opens buffer list
 nnoremap <leader>b :buffers<CR>:buffer<Space>
-
 " Save all buffers
 nnoremap <leader>ss :wa<CR>
-
 " Save all buffers and quit
 nnoremap <leader>sq :xa<CR>
-
 " Quit all, not if there are unsaved changes
 nnoremap <leader>qq :qa<CR>
 
+"""
+""" Text Manipulation
+"""
 " Use enter, and shift enter to add a new line in exec mode
-nmap <S-Enter> O<Esc>j
-nmap <CR> o<Esc>k
+nnoremap <S-Enter> O<Esc>j
+nnoremap <CR> o<Esc>k
+
+""" 
+""" Git
+""" 
+nnoremap <leader>gc :!git commit -am ''<left>
+nnoremap <leader>gs :!git status<CR>
+nnoremap <leader>ga :!git add .<CR>
+nnoremap <leader>gp :!git push<CR>
+
+""" 
+""" Misc.
+""" 
+" Edit vimrc
+nnoremap <leader>ev :!open ~/.vimrc<CR>
+
+
+""" 
+""" Spelling
+""" 
+" Correct first spelling error to the left
+" and go back where the cursor was
+map <leader>za mz[s1z=`z
+" same thing to the right
+map <leader>zs mz]s1z=`z
+" Go to next spelling mistake
+map <leader>zc [s
+" Go to previous spelling mistake
+map <leader>zv ]s
+" Toggle spelling
+map <leader>zt :set spell!<cr>
+" Apply first correction
+map <leader>zz 1z=
