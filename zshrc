@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh configuration.
 PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 
+# disable r comand, so rlang can be called
+disable r
+
 # Load brew bins first
 ZSH=$HOME/.oh-my-zsh
 
