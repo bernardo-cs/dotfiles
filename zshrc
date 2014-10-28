@@ -5,8 +5,9 @@ PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 ZSH=$HOME/.oh-my-zsh
 
 # Set theme, user and editor 
+#ZSH_THEME="af-magic"
 ZSH_THEME="agnoster"
-DEFAULT_USER="bersimoes"
+DEFAULT_USER="bernardosimoes"
 export "EDITOR=vim"
 
 #add z
@@ -27,7 +28,7 @@ source $HOME/.apikeys
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git rails ruby brew bundler rbenv zsh-syntax-highlighting history-substring-search)
+plugins=(git rails ruby brew bundler rbenv history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 #seting up locals for utf8
@@ -54,3 +55,29 @@ zle -N zle-keymap-select
 # this fixes it
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+## Load SSH Agent
+SSH_ENV=$HOME/.ssh/environment
+   
+# start the ssh-agent
+function start_agent {
+    echo "Initializing new SSH agent..."
+    # spawn ssh-agent
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add
+}
+   
+if [ -f "${SSH_ENV}" ]; then
+     . "${SSH_ENV}" > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
+fi
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

@@ -1,12 +1,10 @@
-""" Example Vim configurajonathanfi-luciueistion.
-"" Copy or symlink to ~/.vimrc or ~/_vimrc.
-
 """""  NeoBundle Config 
 if has('vim_starting')
   set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+"call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'kien/ctrlp.vim'
@@ -14,6 +12,7 @@ NeoBundle 'roman/golden-ratio'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
@@ -37,6 +36,8 @@ NeoBundle 'Shougo/vimproc', {
       \ }
 NeoBundle 'ervandew/supertab'
 " Check for uninstalled bundles
+call neobundle#end()
+filetype plugin indent on
 NeoBundleCheck
 
 set nocompatible                  " Must come first because it changes other options.
