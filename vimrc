@@ -15,6 +15,7 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'sjl/vitality.vim'
 NeoBundle 'tpope/vim-eunuch'
@@ -104,17 +105,6 @@ set cursorline
 autocmd InsertEnter * set cursorline! 
 autocmd InsertLeave * set cursorline
 
-" Tab mappings.
-" map <leader>tt :tabnew<cr>
-" map <leader>te :tabedit
-" map <leader>tc :tabclose<cr>
-" map <leader>to :tabonly<cr>
-" map <leader>tn :tabnext<cr>
-" map <leader>tp :tabprevious<cr>
-" map <leader>tf :tabfirst<cr>
-" map <leader>tl :tablast<cr>
-" map <leader>tm :tabmove
-
 " Mappings custom 
 " tab for auto complete
 "imap <Tab> <C-P>
@@ -144,15 +134,6 @@ autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
  autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 set relativenumber        " toggle relative line numbers
-
-" ctrl-n shortcut to toggle between relative and absolute line numbers
-"function! NumberToggle()
-  "if(&relativenumber == 1)
-    "set number
-  "else
-    "set relativenumber
-  "endif
-"endfunc
 
 "nnoremap <C-n> :call NumberToggle()<cr>
 
@@ -206,35 +187,22 @@ set noswapfile
 " Let ultisnippets split my screen
 let g:UltiSnipsEditSplit="vertical"
 
-let g:UltiSnipsExpandTrigger       = "<tab>"
-let g:UltiSnipsJumpForwardTrigger  = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsSnippetDirectories  = ["snips"]
-
-""" make YCM compatible with UltiSnips 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-
-
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-k>"
+let g:UltiSnipsJumpBackwardTrigger="<c-j>"
 
 """""""""""""""""""""""""""""""""""""""""""
 """"""     Personal shortcuts       """""""
 """""""""""""""""""""""""""""""""""""""""""
 
+"""
+""" Shortcuts
+"""
+nnoremap <leader>cc :q<CR>
+
+""" Search and Replace
+"""
 """
 """ Search and Replace
 """
@@ -263,16 +231,21 @@ nnoremap <CR> o<Esc>k
 """ 
 """ Git
 """ 
+nnoremap <leader>gnb :!git checkcout -b
+nnoremap <leader>gcm :!git checkout master<CR>
 nnoremap <leader>gc :!git commit -am ''<left>
 nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gp :!git push<CR>
+nnoremap <leader>gm :!git merge
 
 """ 
 """ Misc.
 """ 
 " Edit vimrc
-nnoremap <leader>ev :!open ~/.vimrc<CR>
+nnoremap <leader>ve :e ~/.vimrc<CR>
+" Reload vim
+nnoremap <leader>vr :source ~/.vimrc<CR>
 
 
 """ 
