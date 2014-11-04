@@ -11,8 +11,12 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
 NeoBundle 'wting/rust.vim'
 NeoBundle 'godlygeek/tabular'
+NeoBundle 'honza/vim-snippets'             "Some default snippets
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
+NeoBundle 'xolox/vim-misc'                 "Used with easy tags
+NeoBundle 'xolox/vim-easytags'             "Ctags management
+NeoBundle 'majutsushi/tagbar'              "Ctags browser
+NeoBundle 'tpope/vim-rails'                "Better Rails integration
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'kchmck/vim-coffee-script'
@@ -196,14 +200,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-j>"
 """"""     Personal shortcuts       """""""
 """""""""""""""""""""""""""""""""""""""""""
 
-"""
-""" Shortcuts
-"""
-nnoremap <leader>cc :q<CR>
-
-""" Search and Replace
-"""
-"""
 """ Search and Replace
 """
 " Replace current selected text, on current buffer
@@ -218,15 +214,14 @@ nnoremap <leader>b :buffers<CR>:buffer<Space>
 nnoremap <leader>ss :wa<CR>
 " Save all buffers and quit
 nnoremap <leader>sq :xa<CR>
-" Quit all, not if there are unsaved changes
-nnoremap <leader>qq :qa<CR>
+" Close pane
+nnoremap <leader>qq :q<CR>
 
 """
 """ Text Manipulation
 """
 " Use enter, and shift enter to add a new line in exec mode
 nnoremap <S-Enter> O<Esc>j
-nnoremap <CR> o<Esc>k
 
 """ 
 """ Git
