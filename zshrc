@@ -23,7 +23,9 @@ eval "$(rbenv init -)"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias myzsh="vi ~/.zshrc && source ~/.zshrc"
+alias myvim="vi ~/.vimrc"
+alias mytmux="vi ~/.tmux.conf"
 
 # Add bash aliases, and API keys to zsh
 source $HOME/.bash_aliases
@@ -31,7 +33,7 @@ source $HOME/.apikeys
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git rails ruby brew bundler rbenv history-substring-search)
+plugins=(git zeus rails ruby brew bundler rbenv history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 #seting up locals for utf8
@@ -61,7 +63,13 @@ bindkey '^[[B' history-substring-search-down
 
 ## Load SSH Agent
 SSH_ENV=$HOME/.ssh/environment
-   
+
+# Vi style incremental search   
+bindkey '^B' history-incremental-search-backward
+bindkey '^O' history-incremental-search-forward
+bindkey '^P' history-substring-search-up   
+bindkey '^N' history-substring-search-down 
+
 # start the ssh-agent
 function start_agent {
     echo "Initializing new SSH agent..."

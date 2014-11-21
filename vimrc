@@ -13,7 +13,7 @@ NeoBundle 'wting/rust.vim'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'honza/vim-snippets'             "Some default snippets
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'xolox/vim-misc'                 "Used with easy tags
+NeoBundle 'xolox/vim-misc'                 " easytags dependency 
 NeoBundle 'xolox/vim-easytags'             "Ctags management
 NeoBundle 'majutsushi/tagbar'              "Ctags browser
 NeoBundle 'tpope/vim-rails'                "Better Rails integration
@@ -32,6 +32,8 @@ NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'thoughtbot/vim-rspec'            " better rspec integration
+NeoBundle 'jgdavey/tslime.vim'              " send shit to tmux
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -259,3 +261,29 @@ map <leader>zv ]s
 map <leader>zt :set spell!<cr>
 " Apply first correction
 map <leader>zz 1z=
+
+"" Running specs
+let g:rspec_command = 'call Send_to_Tmux("zeus rspec {spec}\n")'
+nnoremap <Leader>sf :call RunCurrentSpecFile()<CR>
+nnoremap <Leader>s. :call RunNearestSpec()<CR>
+nnoremap <Leader>sd :call RunLastSpec()<CR>
+nnoremap <Leader>sa :call RunAllSpecs()<CR>
+"run Spec under cursor
+"nnoremap <leader>s. :w <cr>:execute ":!zeus rspec %:" . line('.')<cr>
+""run Spec current File
+"nnoremap <leader>sf :w <cr>:execute ":!zeus rspec %"<cr>
+""run all specs
+"nnoremap <leader>sa :wa <cr>:execute ":!zeus rspec spec"<cr>
+ 
+"" vim.rails key maps
+nnoremap <Leader>rm :Rmodel  
+nnoremap <Leader>rv :Rview 
+nnoremap <Leader>rc :Rcontroller 
+nnoremap <Leader>rh :Rhelper 
+nnoremap <Leader>rm :Rmigration  
+nnoremap <Leader>rr :R<cr> 
+vnoremap <Leader>re :Rextract 
+
+"" Tabularize micode
+nnoremap <Leader>'' :Tab<cr>
+vnoremap <Leader>'' :Tab<cr>
