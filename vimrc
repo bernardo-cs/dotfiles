@@ -280,7 +280,7 @@ nnoremap <Leader>rm :Rmodel
 nnoremap <Leader>rv :Rview 
 nnoremap <Leader>rc :Rcontroller 
 nnoremap <Leader>rh :Rhelper 
-nnoremap <Leader>rm :Rmigration  
+nnoremap <Leader>rmi :Rmigration  
 nnoremap <Leader>rr :R<cr> 
 vnoremap <Leader>re :Rextract 
 
