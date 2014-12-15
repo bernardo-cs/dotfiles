@@ -33,7 +33,7 @@ source $HOME/.apikeys
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git zeus rails ruby brew bundler rbenv history-substring-search)
+plugins=(git zeus rails ruby brew bundler rbenv history-substring-search heroku)
 source $ZSH/oh-my-zsh.sh
 
 #seting up locals for utf8

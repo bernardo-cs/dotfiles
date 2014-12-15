@@ -7,7 +7,7 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
-NeoBundle 'kien/ctrlp.vim'
+"NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'roman/golden-ratio'
 NeoBundle 'wting/rust.vim'
 NeoBundle 'godlygeek/tabular'
@@ -20,7 +20,10 @@ NeoBundle 'tpope/vim-rails'                "Better Rails integration
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'nelstrom/vim-visual-star-search' "Use # and * in visual mode
+NeoBundle 'vim-ruby/vim-ruby'              "Latest version of ruby tools
 NeoBundle 'mileszs/ack.vim'
+NeoBundle 'rking/ag.vim'
 NeoBundle 'sjl/vitality.vim'
 NeoBundle 'tpope/vim-eunuch'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -33,6 +36,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'thoughtbot/vim-rspec'            " better rspec integration
+NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
 NeoBundle 'jgdavey/tslime.vim'              " send shit to tmux
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
@@ -87,7 +91,8 @@ set nowritebackup                 " And again.
 set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 
 set nofoldenable
-set foldmethod=indent
+set fdm=expr                      "Fold comments
+set fde=getline(v:lnum)=~'^\\s#'?1:getline(prevnonblank(v:lnum))=~'^\\s#'?1:getline(nextnonblank(v:lnum))=~'^\\s*#'?1:0
 
 set virtualedit=all             " because blocks rock
 
@@ -95,7 +100,8 @@ set cpoptions+=$                  " Visual help for change word cw
 
 set tabstop=2                    " Global tab width.
 set shiftwidth=2                 " And again, related.
-set expandtab                    " Use spaces instead of tabs
+" Causing major slowdown
+"set expandtab                    " Use spaces instead of tabs
 
 set laststatus=2                  " Show the status line all the time
 " Useful status information at bottom of screen
@@ -106,10 +112,11 @@ let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 set background=light
 colorscheme solarized
 
+" WARNING MIGHT BE CAUSING SOME SLOWNESS
 " Diferentiate between INSERT and NORMAL mode with insert line
-set cursorline
-autocmd InsertEnter * set cursorline! 
-autocmd InsertLeave * set cursorline
+"set cursorline
+"autocmd InsertEnter * set cursorline! 
+"autocmd InsertLeave * set cursorline
 
 " Mappings custom 
 " tab for auto complete
@@ -123,33 +130,25 @@ set complete=.,b,u,]
 set wildmode=longest,list:longest
 
 " Navigate open buffers
-let g:ctrlp_map = '<c-q>'
-let g:ctrlp_cmd = 'CtrlPBuffer'
-"" Navigate files
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-"let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+"let g:ctrlp_map = '<c-q>'
+"let g:ctrlp_cmd = 'CtrlPBuffer'
+""" Navigate files
+"let g:ctrlp_map = '<c-p>'
+"let g:ctrlp_cmd = 'CtrlP'
+""let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+""let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+"" Sane Ignore For ctrlp
+"let g:ctrlp_custom_ignore = {
+  "\ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|tmp$',
+  "\ 'file': '\.exe$\|\.so$\|\.swp$\|\.dat$'
+  "\ }
 
 " progaming language number of tabs
 autocmd Filetype r setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 
 " Automatic fold settings for specific files. Uncomment to use.
- autocmd FileType ruby setlocal foldmethod=syntax
  autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
-
-set relativenumber        " toggle relative line numbers
-
-"nnoremap <C-n> :call NumberToggle()<cr>
-
-" Switch to absolute line numbers when vim loses focus
-:au FocusLost * :set number
-:au FocusGained * :set relativenumber
-
-" Switch to absolute line numbers when in insert mode
-autocmd InsertEnter * :set number
-autocmd InsertLeave * :set relativenumber
 
 " reduce esc  key lag
 set timeoutlen=1000 ttimeoutlen=0
@@ -160,7 +159,6 @@ set timeoutlen=1000 ttimeoutlen=0
 set ttyfast " u got a fast terminal
 set ttyscroll=3
 set lazyredraw " to avoid scrolling problems
-set re=1 "set regex engine to older one, might speedup vim
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
@@ -190,13 +188,18 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" Remove tab from youcompleteme
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_key_invoke_completion = '<Down>'
+
 " Let ultisnippets split my screen
 let g:UltiSnipsEditSplit="vertical"
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-k>"
-let g:UltiSnipsJumpBackwardTrigger="<c-j>"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 """""""""""""""""""""""""""""""""""""""""""
 """"""     Personal shortcuts       """""""
@@ -268,12 +271,6 @@ nnoremap <Leader>sf :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s. :call RunNearestSpec()<CR>
 nnoremap <Leader>sd :call RunLastSpec()<CR>
 nnoremap <Leader>sa :call RunAllSpecs()<CR>
-"run Spec under cursor
-"nnoremap <leader>s. :w <cr>:execute ":!zeus rspec %:" . line('.')<cr>
-""run Spec current File
-"nnoremap <leader>sf :w <cr>:execute ":!zeus rspec %"<cr>
-""run all specs
-"nnoremap <leader>sa :wa <cr>:execute ":!zeus rspec spec"<cr>
  
 "" vim.rails key maps
 nnoremap <Leader>rm :Rmodel  
@@ -285,5 +282,46 @@ nnoremap <Leader>rr :R<cr>
 vnoremap <Leader>re :Rextract 
 
 "" Tabularize micode
-nnoremap <Leader>'' :Tab<cr>
-vnoremap <Leader>'' :Tab<cr>
+nnoremap <Leader>' :Tab<cr>
+vnoremap <Leader>' :Tab<cr>
+nnoremap <Leader>'{ :Tab /^[^{]*\zsl{<cr>
+vnoremap <Leader>'{ :Tab /^[^{]*\zsl{<cr>
+nnoremap <Leader>'r :Tab /^[^=>]*\zs=><cr>
+vnoremap <Leader>'r :Tab /^[^=>]*\zs=><cr>
+nnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
+vnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
+nnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
+vnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
+ 
+
+set re=1 "set regex engine to older one, might speedup vim
+
+""" Select Functions and Mappings
+" Run a given vim command on the results of fuzzy selecting from a given shell
+" command. See usage below.
+function! SelectaCommand(choice_command, selecta_args, vim_command)
+  try
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec a:vim_command . " " . selection
+endfunction
+
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those. Open the selected file with :e.
+nnoremap <c-p> :call SelectaCommand("find * -type f", "", ":e")<cr>
+
+" Find files under the cursor
+function! SelectaIdentifier()
+  " Yank the word under the cursor into the z register
+  normal "zyiw
+  " Fuzzy match files in the current directory, starting with the word under
+  " the cursor
+  call SelectaCommand("find * -type f", "-s " . @z, ":e")
+endfunction
+nnoremap <leader>p :call SelectaIdentifier()<cr>

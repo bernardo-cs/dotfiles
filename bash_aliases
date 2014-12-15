@@ -9,7 +9,7 @@ alias pg_stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 alias ber="bundle exec rails "
 alias bera="bundle exec rake "
 alias be="bundle exec "
-alias bz="zeus "
 
 alias alg="alias | grep "
+alias vmap="cat ~/.vimrc | grep map "
 
