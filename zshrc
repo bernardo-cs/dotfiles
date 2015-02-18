@@ -9,7 +9,7 @@ ZSH=$HOME/.oh-my-zsh
 
 # Set theme, user and editor 
 #ZSH_THEME="af-magic"
-ZSH_THEME="agnoster"
+ZSH_THEME="avit"
 DEFAULT_USER="bernardosimoes"
 export "EDITOR=vim"
 
@@ -33,7 +33,7 @@ source $HOME/.apikeys
  
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git zeus rails ruby brew bundler rbenv history-substring-search heroku)
+plugins=(git zeus rails ruby brew bundler rbenv history-substring-search heroku sublime)
 source $ZSH/oh-my-zsh.sh
 
 #seting up locals for utf8
@@ -92,3 +92,6 @@ fi
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+## add android studio
+export ANDROID_HOME=/Users/bernardosimoes/Library/Android/sdk 

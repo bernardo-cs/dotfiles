@@ -1,6 +1,7 @@
 alias art='php artisan'
 alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 alias chrome='open -a Google\ Chrome\ Canary'
+alias ff='open -a FirefoxDeveloperEdition'
 alias pbcopyt='reattach-to-user-namespace pbcopy'
 alias vi="vim"
 alias pg_start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
@@ -12,4 +13,4 @@ alias be="bundle exec "
 
 alias alg="alias | grep "
 alias vmap="cat ~/.vimrc | grep map "
-
+alias gitfuckit="git checkout -- ."

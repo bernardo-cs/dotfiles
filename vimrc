@@ -1,4 +1,4 @@
-"""""  NeoBundle Config 
+"mxw/vim-jsx""""  NeoBundle Config 
 if has('vim_starting')
   set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim/
@@ -7,15 +7,21 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
-"NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'ecomba/vim-ruby-refactoring'
 NeoBundle 'roman/golden-ratio'
 NeoBundle 'wting/rust.vim'
+NeoBundle 'tpope/vim-haystack'             " better fuzzy search
+NeoBundle 'guns/vim-clojure-static'                " better clojure integration
+NeoBundle 'tpope/vim-leiningen'                " leiningen support for vim
+NeoBundle 'tpope/vim-fireplace'                " clojure repl for vim
 NeoBundle 'godlygeek/tabular'
+NeoBundle 'justinj/vim-react-snippets'     " React Snippets
+NeoBundle 'pangloss/vim-javascript'        "Better js highlight
+NeoBundle 'mxw/vim-jsx'                    "Better jsx highlight
 NeoBundle 'honza/vim-snippets'             "Some default snippets
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'xolox/vim-misc'                 " easytags dependency 
 NeoBundle 'xolox/vim-easytags'             "Ctags management
-NeoBundle 'majutsushi/tagbar'              "Ctags browser
 NeoBundle 'tpope/vim-rails'                "Better Rails integration
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
@@ -32,12 +38,20 @@ NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'jonathanfilip/vim-lucius'
+NeoBundle 'takac/vim-hardtime'              " stop hitting kkkk
 NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'Wolfy87/vim-enmasse'
+NeoBundle 'tpope/vim-surround'
 NeoBundle 'thoughtbot/vim-rspec'            " better rspec integration
 NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
-NeoBundle 'jgdavey/tslime.vim'              " send shit to tmux
+NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter    
+NeoBundle 'tpope/vim-dispatch'              " make async on another pane
+NeoBundle 'tpope/vim-fugitive'              " git wrapper
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'tpope/vim-fugitive'              " git wrapper
+NeoBundle 'mustache/vim-mustache-handlebars'
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -46,10 +60,17 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+"
 " Check for uninstalled bundles
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
+
+" check for removed bundles
+NeoBundleClean
+
+" update bundles
+" NeoBundleUpdate
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -100,8 +121,8 @@ set cpoptions+=$                  " Visual help for change word cw
 
 set tabstop=2                    " Global tab width.
 set shiftwidth=2                 " And again, related.
-" Causing major slowdown
-"set expandtab                    " Use spaces instead of tabs
+
+set expandtab                    " Use spaces instead of tabs
 
 set laststatus=2                  " Show the status line all the time
 " Useful status information at bottom of screen
@@ -129,20 +150,6 @@ set complete=.,b,u,]
 " Closest to zsh completion
 set wildmode=longest,list:longest
 
-" Navigate open buffers
-"let g:ctrlp_map = '<c-q>'
-"let g:ctrlp_cmd = 'CtrlPBuffer'
-""" Navigate files
-"let g:ctrlp_map = '<c-p>'
-"let g:ctrlp_cmd = 'CtrlP'
-""let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-""let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
-"" Sane Ignore For ctrlp
-"let g:ctrlp_custom_ignore = {
-  "\ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|tmp$',
-  "\ 'file': '\.exe$\|\.so$\|\.swp$\|\.dat$'
-  "\ }
-
 " progaming language number of tabs
 autocmd Filetype r setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
@@ -163,6 +170,9 @@ set lazyredraw " to avoid scrolling problems
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
+" Enable Hardtime 
+let g:hardtime_default_on = 1
+
 " Auto remove trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
   let l = line(".")
@@ -171,6 +181,7 @@ fun! <SID>StripTrailingWhitespaces()
   call cursor(l, c)
 endfun
 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType ruby,slim autocmd BufWritePre <buffer> :retab
 
 " VIM-Latex specific
 " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -215,8 +226,9 @@ nnoremap <leader>sr :%s///g<left><left>
 """
 " Opens buffer list
 nnoremap <leader>b :buffers<CR>:buffer<Space>
-" Save all buffers
+" Save all buffers and change tabs for spaces
 nnoremap <leader>ss :wa<CR>
+"nnoremap <leader>ss :retab<CR> :wa<CR>
 " Save all buffers and quit
 nnoremap <leader>sq :xa<CR>
 " Close pane
@@ -266,12 +278,16 @@ map <leader>zt :set spell!<cr>
 map <leader>zz 1z=
 
 "" Running specs
-let g:rspec_command = 'call Send_to_Tmux("zeus rspec {spec}\n")'
-nnoremap <Leader>sf :call RunCurrentSpecFile()<CR>
-nnoremap <Leader>s. :call RunNearestSpec()<CR>
-nnoremap <Leader>sd :call RunLastSpec()<CR>
-nnoremap <Leader>sa :call RunAllSpecs()<CR>
- 
+let g:rspec_command = 'compiler rspec | set makeprg=spring | Make rspec {spec}'
+nnoremap <Leader>sf  :w <bar> :call RunCurrentSpecFile()<CR>
+nnoremap <Leader>s.  :w <bar> :call RunNearestSpec()<CR>
+nnoremap <Leader>sd  :w <bar> :call RunLastSpec()<CR>
+nnoremap <Leader>sa  :w <bar> :call RunAllSpecs()<CR>
+nnoremap <Leader>st  :w <bar> :Start spring rspec %<CR>
+
+" Get me some pry
+nnoremap <leader>bp Obinding.pry<esc>:w<cr>
+
 "" vim.rails key maps
 nnoremap <Leader>rm :Rmodel  
 nnoremap <Leader>rv :Rview 
@@ -299,29 +315,68 @@ set re=1 "set regex engine to older one, might speedup vim
 """ Select Functions and Mappings
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-  try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec a:vim_command . " " . selection
-endfunction
+"function! SelectaCommand(choice_command, selecta_args, vim_command)
+  "try
+    "let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  "catch /Vim:Interrupt/
+    "" Swallow the ^C so that the redraw below happens; otherwise there will be
+    "" leftovers from selecta on the screen
+    "redraw!
+    "return
+  "endtry
+  "redraw!
+  "exec a:vim_command . " " . selection
+"endfunction
 
-" Find all files in all non-dot directories starting in the working directory.
-" Fuzzy select one of those. Open the selected file with :e.
-nnoremap <c-p> :call SelectaCommand("find * -type f", "", ":e")<cr>
+"" Find all files in all non-dot directories starting in the working directory.
+"" Fuzzy select one of those. Open the selected file with :e.
+"nnoremap <c-p> :call SelectaCommand("find * -type f", "", ":e")<cr>
 
-" Find files under the cursor
-function! SelectaIdentifier()
-  " Yank the word under the cursor into the z register
-  normal "zyiw
-  " Fuzzy match files in the current directory, starting with the word under
-  " the cursor
-  call SelectaCommand("find * -type f", "-s " . @z, ":e")
-endfunction
-nnoremap <leader>p :call SelectaIdentifier()<cr>
+"" Find files under the cursor
+"function! SelectaIdentifier()
+  "" Yank the word under the cursor into the z register
+  "normal "zyiw
+  "" Fuzzy match files in the current directory, starting with the word under
+  "" the cursor
+  "call SelectaCommand("find * -type f", "-s " . @z, ":e")
+"endfunction
+"nnoremap <leader>p :call SelectaIdentifier()<cr>
+
+" --- type § to search the word in all files in the current dir
+nmap § :Ag <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag
+let g:unite_source_history_yank_enable = 1
+try
+  let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+catch
+endtry
+" search a file in the filetree
+nnoremap <space><space> :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
+" reset not it is <C-l> normally
+:nnoremap <space>r <Plug>(unite_restart)
+
+" Refactoring Shortcuts
+:nnoremap <leader>rap  :RAddParameter<cr>
+:nnoremap <leader>rcpc :RConvertPostConditional<cr>
+:nnoremap <leader>rel  :RExtractLet<cr>
+:vnoremap <leader>rec  :RExtractConstant<cr>
+:vnoremap <leader>relv :RExtractLocalVariable<cr>
+:nnoremap <leader>rit  :RInlineTemp<cr>
+:vnoremap <leader>rrlv :RRenameLocalVariable<cr>
+:vnoremap <leader>rriv :RRenameInstanceVariable<cr>
+:vnoremap <leader>rem  :RExtractMethod<cr>
+
+"Insert mode shortcuts
+inoremap II <Esc>I
+inoremap AA <Esc>A
+inoremap OO <Esc>O
+inoremap CC <Esc>C
+inoremap CW <Esc>bcw
+inoremap Ee <Esc>ea
+inoremap EE <Esc>Ea
+
+""" File type specific
+" Slim
+" show tabs:
+au  FileType slim set list
