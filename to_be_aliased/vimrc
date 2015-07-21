@@ -1,4 +1,4 @@
-"mxw/vim-jsx""""  NeoBundle Config 
+"mxw/vim-jsx""""  NeoBundle Config
 if has('vim_starting')
   set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim/
@@ -7,20 +7,24 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
+NeoBundle 'scrooloose/syntastic'
 NeoBundle 'ecomba/vim-ruby-refactoring'
-NeoBundle 'roman/golden-ratio'
+NeoBundle 'justinmk/vim-sneak'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'wting/rust.vim'
 NeoBundle 'tpope/vim-haystack'             " better fuzzy search
 NeoBundle 'guns/vim-clojure-static'                " better clojure integration
-NeoBundle 'tpope/vim-leiningen'                " leiningen support for vim
+NeoBundle 'tpope/vim-salve'                " leiningen support for vim
 NeoBundle 'tpope/vim-fireplace'                " clojure repl for vim
+NeoBundle 'tpope/vim-classpath'                " better find and gf for jvm projects
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'justinj/vim-react-snippets'     " React Snippets
 NeoBundle 'pangloss/vim-javascript'        "Better js highlight
 NeoBundle 'mxw/vim-jsx'                    "Better jsx highlight
 NeoBundle 'honza/vim-snippets'             "Some default snippets
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'xolox/vim-misc'                 " easytags dependency 
+NeoBundle 'xolox/vim-misc'                 " easytags dependency
 NeoBundle 'xolox/vim-easytags'             "Ctags management
 NeoBundle 'tpope/vim-rails'                "Better Rails integration
 NeoBundle 'slim-template/vim-slim'
@@ -38,20 +42,22 @@ NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'takac/vim-hardtime'              " stop hitting kkkk
 NeoBundle 'bling/vim-airline'
 NeoBundle 'edkolev/tmuxline.vim'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'Wolfy87/vim-enmasse'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'thoughtbot/vim-rspec'            " better rspec integration
 NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
-NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter    
+NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter
 NeoBundle 'tpope/vim-dispatch'              " make async on another pane
 NeoBundle 'tpope/vim-fugitive'              " git wrapper
-NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'              " git wrapper
 NeoBundle 'mustache/vim-mustache-handlebars'
+NeoBundle 'michaeljsmith/vim-indent-object' " text object based on code identation
+"NeoBundle 'zhaocai/GoldenView.Vim'
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -130,19 +136,20 @@ set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLo
 
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 " Solarized stuff
+let g:solarized_termcolors=16
 set background=light
 colorscheme solarized
 
 " WARNING MIGHT BE CAUSING SOME SLOWNESS
 " Diferentiate between INSERT and NORMAL mode with insert line
 "set cursorline
-"autocmd InsertEnter * set cursorline! 
+"autocmd InsertEnter * set cursorline!
 "autocmd InsertLeave * set cursorline
 
-" Mappings custom 
+" Mappings custom
 " tab for auto complete
 "imap <Tab> <C-P>
-" press jk in insert mode to enter command mode 
+" press jk in insert mode to enter command mode
 imap jk <c-c>
 " Autocomplete will pull from keywords in the current file, other buffers (closed or still
 " open), and from the current tags file
@@ -155,7 +162,7 @@ autocmd Filetype r setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 
 " Automatic fold settings for specific files. Uncomment to use.
- autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
+autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 " reduce esc  key lag
 set timeoutlen=1000 ttimeoutlen=0
@@ -169,8 +176,9 @@ set lazyredraw " to avoid scrolling problems
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+set wildignore+=vendor/rails/*,bin/*,node_modules/*,script/* " Rails
 
-" Enable Hardtime 
+" Enable Hardtime
 let g:hardtime_default_on = 1
 
 " Auto remove trailing whitespace
@@ -180,8 +188,8 @@ fun! <SID>StripTrailingWhitespaces()
   %s/\s\+$//e
   call cursor(l, c)
 endfun
-autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-autocmd FileType ruby,slim autocmd BufWritePre <buffer> :retab
+autocmd FileType c,coffee,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType ruby,coffee,slim autocmd BufWritePre <buffer> :retab
 
 " VIM-Latex specific
 " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -192,7 +200,7 @@ let g:tex_flavor='latex'
 "set wildignore+=*.log,*.aux,*.dvi,*.aut,*.aux,*.bbl,*.blg,*.dvi,*.fff,*.log,*.out,*.pdf,*.ps,*.toc,*.ttt,*.m*,*.lo*,*.eps,*.sty,*.backupn
 
 " set default register to the clipboard
-set clipboard=unnamed                    
+set clipboard=unnamed
 
 " stop swap files
 set nobackup
@@ -240,9 +248,9 @@ nnoremap <leader>qq :q<CR>
 " Use enter, and shift enter to add a new line in exec mode
 nnoremap <S-Enter> O<Esc>j
 
-""" 
+"""
 """ Git
-""" 
+"""
 nnoremap <leader>gnb :!git checkcout -b
 nnoremap <leader>gcm :!git checkout master<CR>
 nnoremap <leader>gc :!git commit -am ''<left>
@@ -251,18 +259,18 @@ nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gp :!git push<CR>
 nnoremap <leader>gm :!git merge
 
-""" 
+"""
 """ Misc.
-""" 
+"""
 " Edit vimrc
 nnoremap <leader>ve :e ~/.vimrc<CR>
 " Reload vim
 nnoremap <leader>vr :source ~/.vimrc<CR>
 
 
-""" 
+"""
 """ Spelling
-""" 
+"""
 " Correct first spelling error to the left
 " and go back where the cursor was
 map <leader>za mz[s1z=`z
@@ -289,13 +297,13 @@ nnoremap <Leader>st  :w <bar> :Start spring rspec %<CR>
 nnoremap <leader>bp Obinding.pry<esc>:w<cr>
 
 "" vim.rails key maps
-nnoremap <Leader>rm :Rmodel  
-nnoremap <Leader>rv :Rview 
-nnoremap <Leader>rc :Rcontroller 
-nnoremap <Leader>rh :Rhelper 
-nnoremap <Leader>rmi :Rmigration  
-nnoremap <Leader>rr :R<cr> 
-vnoremap <Leader>re :Rextract 
+nnoremap <Leader>rm :Rmodel
+nnoremap <Leader>rv :Rview
+nnoremap <Leader>rc :Rcontroller
+nnoremap <Leader>rh :Rhelper
+nnoremap <Leader>rmi :Rmigration
+nnoremap <Leader>rr :R<cr>
+vnoremap <Leader>re :Rextract
 
 "" Tabularize micode
 nnoremap <Leader>' :Tab<cr>
@@ -308,7 +316,7 @@ nnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
 vnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
 nnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
 vnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
- 
+
 
 set re=1 "set regex engine to older one, might speedup vim
 
@@ -316,16 +324,16 @@ set re=1 "set regex engine to older one, might speedup vim
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.
 "function! SelectaCommand(choice_command, selecta_args, vim_command)
-  "try
-    "let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-  "catch /Vim:Interrupt/
-    "" Swallow the ^C so that the redraw below happens; otherwise there will be
-    "" leftovers from selecta on the screen
-    "redraw!
-    "return
-  "endtry
-  "redraw!
-  "exec a:vim_command . " " . selection
+"try
+"let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+"catch /Vim:Interrupt/
+"" Swallow the ^C so that the redraw below happens; otherwise there will be
+"" leftovers from selecta on the screen
+"redraw!
+"return
+"endtry
+"redraw!
+"exec a:vim_command . " " . selection
 "endfunction
 
 "" Find all files in all non-dot directories starting in the working directory.
@@ -334,27 +342,13 @@ set re=1 "set regex engine to older one, might speedup vim
 
 "" Find files under the cursor
 "function! SelectaIdentifier()
-  "" Yank the word under the cursor into the z register
-  "normal "zyiw
-  "" Fuzzy match files in the current directory, starting with the word under
-  "" the cursor
-  "call SelectaCommand("find * -type f", "-s " . @z, ":e")
+"" Yank the word under the cursor into the z register
+"normal "zyiw
+"" Fuzzy match files in the current directory, starting with the word under
+"" the cursor
+"call SelectaCommand("find * -type f", "-s " . @z, ":e")
 "endfunction
 "nnoremap <leader>p :call SelectaIdentifier()<cr>
-
-" --- type § to search the word in all files in the current dir
-nmap § :Ag <c-r>=expand("<cword>")<cr><cr>
-nnoremap <space>/ :Ag
-let g:unite_source_history_yank_enable = 1
-try
-  let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-catch
-endtry
-" search a file in the filetree
-nnoremap <space><space> :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
-" reset not it is <C-l> normally
-:nnoremap <space>r <Plug>(unite_restart)
 
 " Refactoring Shortcuts
 :nnoremap <leader>rap  :RAddParameter<cr>
@@ -380,3 +374,59 @@ inoremap EE <Esc>Ea
 " Slim
 " show tabs:
 au  FileType slim set list
+
+" syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_ruby_checkers = ['mri']
+
+" Angular maps
+nnoremap <leader>as :e app/assets/javascripts/angular/services/
+nnoremap <leader>ac :e app/assets/javascripts/angular/controllers/
+nnoremap <leader>aa :e app/assets/javascripts/angular/
+
+" Airline config
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_section_b = ''
+let g:airline_section_y = ''
+
+" Tab maps
+nmap <silent> tt :tabnew<CR>
+nmap <silent> [g :tabprevious<CR>
+nmap <silent> ]g :tabnext<CR>
+nmap <silent> [G :tabrewind<CR>
+nmap <silent> ]G :tablast<CR>
+
+" assync ctags
+let g:easytags_async = 1
+
+" project specific vimrc
+if filereadable(glob(".vimrc.local"))
+    source .vimrc.local
+endif
+
+" \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+" ctrl p
+let g:ctrlp_working_path_mode = 'r'
+let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\.git\|node_modules\|bin\|\.hg\|\.svn\|build\|log\|resources\|spec/vcr\|coverage\|doc\|tmp\|public/assets\|vendor\|Android',
+      \ 'file': '\v\.(exe|so|dll)$',
+      \ }
+let g:ctrlp_cmd = 'CtrlPMixed'
+
+" Map space to leader
+noremap <space> :
+
+" ctrlp current word
+nmap ± :CtrlP<CR><C-\>w
+
+" abbreviations
+iab bp binding.pry
+iab db debugger

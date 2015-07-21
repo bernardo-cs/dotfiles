@@ -1,3 +1,11 @@
+#add rbenv
+#eval "$(rbenv init - --no-rehash)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# load brew bins before system
+export PATH="/usr/local/bin:$PATH"
+
 # Path to your oh-my-zsh configuration.
 PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 
@@ -15,11 +23,6 @@ export "EDITOR=vim"
 
 #add z
 . /src/clones/z/z.sh
-
-#add rbenv
-#eval "$(rbenv init - --no-rehash)"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -93,5 +96,17 @@ fi
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
+### Add go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+
 ## add android studio
 export ANDROID_HOME=/Users/bernardosimoes/Library/Android/sdk 
+
+## Autocomplete ag with dotfiles
+_ag() {
+  if (( CURRENT == 2 )); then
+    compadd $(cut -f 1 .git/tags tmp/tags 2>/dev/null | grep -v '!_TAG')
+  fi
+}
+
+compdef _ag ag

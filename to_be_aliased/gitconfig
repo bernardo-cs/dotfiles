@@ -1,0 +1,1 @@
+edit = "!vim `git ls-files -m` -p"
