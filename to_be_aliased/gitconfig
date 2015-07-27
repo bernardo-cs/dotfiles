@@ -1,5 +1,5 @@
 [user]
-	name = Bernarod Carvalho Simoes
+	name = Bernarod Simoes
 	email = bersimoes@gmail.com
 [core]
 	editor = vim
@@ -15,11 +15,12 @@
 	meta = yellow bold
 	frag = magenta bold
 	old = red bold
-	new = green bold
+	new = cyan bold
 	whitespace = red reverse
 [color "status"]
 	added = green bold
 	changed = yellow bold
 	untracked = red bold
 [alias]
+  undo = "reset --soft HEAD~1"
   edit = "!vim `git ls-files -m` -p"

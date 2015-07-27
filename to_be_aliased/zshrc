@@ -1,3 +1,6 @@
+#add hub over git
+eval "$(hub alias -s)"
+
 #add rbenv
 #eval "$(rbenv init - --no-rehash)"
 export PATH="$HOME/.rbenv/bin:$PATH"
