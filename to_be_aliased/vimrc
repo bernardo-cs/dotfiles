@@ -430,3 +430,6 @@ nmap ± :CtrlP<CR><C-\>w
 " abbreviations
 iab bp binding.pry
 iab db debugger
+
+" fast word search with ag
+noremap § :Ag! -Q <C-r>=expand('<cword>')<CR>

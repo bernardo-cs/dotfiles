@@ -1,4 +1,5 @@
 Pry.config.editor = "vim --noplugin"
+Pry.commands.alias_command 'l', 'whereami'
 
 if defined?(PryByebug)
   Pry.commands.alias_command 'c', 'continue'
