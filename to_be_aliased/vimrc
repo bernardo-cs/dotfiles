@@ -12,20 +12,14 @@ NeoBundle 'ecomba/vim-ruby-refactoring'
 NeoBundle 'justinmk/vim-sneak'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
-NeoBundle 'wting/rust.vim'
-NeoBundle 'tpope/vim-haystack'             " better fuzzy search
+NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'guns/vim-clojure-static'                " better clojure integration
-NeoBundle 'tpope/vim-salve'                " leiningen support for vim
-NeoBundle 'tpope/vim-fireplace'                " clojure repl for vim
-NeoBundle 'tpope/vim-classpath'                " better find and gf for jvm projects
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'justinj/vim-react-snippets'     " React Snippets
 NeoBundle 'pangloss/vim-javascript'        "Better js highlight
 NeoBundle 'mxw/vim-jsx'                    "Better jsx highlight
 NeoBundle 'honza/vim-snippets'             "Some default snippets
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'xolox/vim-misc'                 " easytags dependency
-NeoBundle 'xolox/vim-easytags'             "Ctags management
 NeoBundle 'tpope/vim-rails'                "Better Rails integration
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'christoomey/vim-tmux-navigator'
@@ -35,29 +29,33 @@ NeoBundle 'vim-ruby/vim-ruby'              "Latest version of ruby tools
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'sjl/vitality.vim'
-NeoBundle 'tpope/vim-eunuch'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'tpope/vim-obsession'             "session management
 NeoBundle 'vim-scripts/Auto-Pairs'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'edkolev/tmuxline.vim'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'Wolfy87/vim-enmasse'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'thoughtbot/vim-rspec'            " better rspec integration
+NeoBundle 'Olical/vim-enmasse'
 NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
 NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter
+NeoBundle 'tpope/vim-classpath'                " better find and gf for jvm projects
+NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'tpope/vim-obsession'             "session management
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'              " make async on another pane
 NeoBundle 'tpope/vim-fugitive'              " git wrapper
-NeoBundle 'tpope/vim-fugitive'              " git wrapper
+NeoBundle 'tpope/vim-haystack'             " better fuzzy search
+NeoBundle 'tpope/vim-salve'                " leiningen support for vim
+NeoBundle 'tpope/vim-fireplace'                " clojure repl for vim
 NeoBundle 'mustache/vim-mustache-handlebars'
-NeoBundle 'michaeljsmith/vim-indent-object' " text object based on code identation
-"NeoBundle 'zhaocai/GoldenView.Vim'
+NeoBundle 'leafgarland/typescript-vim'      "typescript support 
+NeoBundle 'janko-m/vim-test'      
+NeoBundle 'editorconfig/editorconfig-vim'
+NeoBundle 'neomake/neomake' "async linting
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -66,17 +64,12 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+
 "
 " Check for uninstalled bundles
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
-
-" check for removed bundles
-NeoBundleClean
-
-" update bundles
-" NeoBundleUpdate
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -139,6 +132,9 @@ let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 let g:solarized_termcolors=16
 set background=light
 colorscheme solarized
+
+" set auto read buffers
+set autoread
 
 " WARNING MIGHT BE CAUSING SOME SLOWNESS
 " Diferentiate between INSERT and NORMAL mode with insert line
@@ -242,6 +238,10 @@ nnoremap <leader>sq :xa<CR>
 " Close pane
 nnoremap <leader>qq :q<CR>
 
+
+" rubocop auto correct buffer
+nnoremap <leader>wb :let lineNumber = line('.') <cr> :%!rubocop -a -s  % <cr> :0,5d <cr> :execute lineNumber <cr>
+
 """
 """ Text Manipulation
 """
@@ -286,12 +286,20 @@ map <leader>zt :set spell!<cr>
 map <leader>zz 1z=
 
 "" Running specs
-let g:rspec_command = 'compiler rspec | set makeprg=spring | Make rspec {spec}'
-nnoremap <Leader>sf  :w <bar> :call RunCurrentSpecFile()<CR>
-nnoremap <Leader>s.  :w <bar> :call RunNearestSpec()<CR>
-nnoremap <Leader>sd  :w <bar> :call RunLastSpec()<CR>
-nnoremap <Leader>sa  :w <bar> :call RunAllSpecs()<CR>
-nnoremap <Leader>st  :w <bar> :Start spring rspec %<CR>
+
+"let g:rspec_command = 'compiler rspec | set makeprg=spring | Make rspec {spec}'
+"let g:rspec_command = '!bin/rails test {spec}'
+
+let test#strategy = "dispatch"
+nnoremap <Leader>sf  :w <bar> :TestFile<CR>
+nnoremap <Leader>s.  :w <bar> :TestNearest<CR>
+nnoremap <Leader>sd  :w <bar> :TestLast<CR>
+nnoremap <Leader>sa  :w <bar> :TestSuite<CR>
+nnoremap <Leader>sv  :w <bar> :TestVisit<CR>
+
+" Minitest
+"nnoremap <Leader>sf :w <bar> :Dispatch bin/rails test %<CR>
+"nnoremap <Leader>s. :w <bar> :Dispatch bin/rails test %:<C-r>=line('.')<cr><cr>
 
 " Get me some pry
 nnoremap <leader>bp Obinding.pry<esc>:w<cr>
@@ -379,6 +387,7 @@ au  FileType slim set list
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_typescript_checkers=['tslint','tsc']
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
@@ -420,9 +429,7 @@ let g:ctrlp_custom_ignore = {
       \ 'file': '\v\.(exe|so|dll)$',
       \ }
 let g:ctrlp_cmd = 'CtrlPMixed'
-
-" Map space to leader
-noremap <space> :
+nnoremap <space> :CtrlPTag<cr>
 
 " ctrlp current word
 nmap ± :CtrlP<CR><C-\>w
@@ -433,3 +440,82 @@ iab db debugger
 
 " fast word search with ag
 noremap § :Ag! -Q <C-r>=expand('<cword>')<CR>
+
+" YCM use pyenv python
+let g:ycm_path_to_python_interpreter = '/Users/bersimoes/.pyenv/shims/python'
+
+" rails commands
+noremap <leader>rc :Dispatch bin/rails c <CR>
+noremap <leader>rdb :Dispatch bin/rails dbconsole <CR>
+
+" editor config play nicely with fugitive 
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+" create parent folder when saving a new file if they dont exist
+function s:MkNonExDir(file, buf)
+    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+        let dir=fnamemodify(a:file, ':h')
+        if !isdirectory(dir)
+            call mkdir(dir, 'p')
+        endif
+    endif
+endfunction
+augroup BWCCreateDir
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
+" ----------------------------------------------------------------------------
+" ?ii / ?ai | indent-object
+" ?io       | strictly-indent-object
+" ----------------------------------------------------------------------------
+function! s:indent_len(str)
+  return type(a:str) == 1 ? len(matchstr(a:str, '^\s*')) : 0
+endfunction
+
+function! s:indent_object(op, skip_blank, b, e, bd, ed)
+  let i = min([s:indent_len(getline(a:b)), s:indent_len(getline(a:e))])
+  let x = line('$')
+  let d = [a:b, a:e]
+
+  if i == 0 && empty(getline(a:b)) && empty(getline(a:e))
+    let [b, e] = [a:b, a:e]
+    while b > 0 && e <= line('$')
+      let b -= 1
+      let e += 1
+      let i = min(filter(map([b, e], 's:indent_len(getline(v:val))'), 'v:val != 0'))
+      if i > 0
+        break
+      endif
+    endwhile
+  endif
+
+  for triple in [[0, 'd[o] > 1', -1], [1, 'd[o] < x', +1]]
+    let [o, ev, df] = triple
+
+    while eval(ev)
+      let line = getline(d[o] + df)
+      let idt = s:indent_len(line)
+
+      if eval('idt '.a:op.' i') && (a:skip_blank || !empty(line)) || (a:skip_blank && empty(line))
+        let d[o] += df
+      else | break | end
+    endwhile
+  endfor
+  execute printf('normal! %dGV%dG', max([1, d[0] + a:bd]), min([x, d[1] + a:ed]))
+endfunction
+xnoremap <silent> ii :<c-u>call <SID>indent_object('>=', 1, line("'<"), line("'>"), 0, 0)<cr>
+onoremap <silent> ii :<c-u>call <SID>indent_object('>=', 1, line('.'), line('.'), 0, 0)<cr>
+xnoremap <silent> ai :<c-u>call <SID>indent_object('>=', 1, line("'<"), line("'>"), -1, 1)<cr>
+onoremap <silent> ai :<c-u>call <SID>indent_object('>=', 1, line('.'), line('.'), -1, 1)<cr>
+xnoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line("'<"), line("'>"), 0, 0)<cr>
+onoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line('.'), line('.'), 0, 0)<cr>
+
+" Adds :Notes command
+command Notes e ~/Desktop/notes.md
+
+" run neomake on save
+autocmd! BufWritePost * Neomake
+
+" Reformat json file
+nnoremap <leader>fj :%! json_reformat <cr>

@@ -1,7 +1,10 @@
+require 'rubygems'
+require 'interactive_editor'
+
 begin
-    require "pry"
-      Pry.start
-        exit
-rescue LoadError => e
-    warn "=> Unable to load pry"
+  require "pry"
+  Pry.start
+  exit
+rescue LoadError
+  warn "=> Unable to load pry"
 end
