@@ -8,13 +8,10 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 " My bundles here:
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'ecomba/vim-ruby-refactoring'
 NeoBundle 'justinmk/vim-sneak'
-NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'guns/vim-clojure-static'                " better clojure integration
-NeoBundle 'godlygeek/tabular'
 NeoBundle 'justinj/vim-react-snippets'     " React Snippets
 NeoBundle 'pangloss/vim-javascript'        "Better js highlight
 NeoBundle 'mxw/vim-jsx'                    "Better jsx highlight
@@ -36,7 +33,6 @@ NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'edkolev/tmuxline.vim'
 NeoBundle 'Olical/vim-enmasse'
 NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
 NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter
@@ -64,6 +60,10 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+
+" Enable fzf
+set rtp+=/usr/local/opt/fzf
+NeoBundle 'junegunn/fzf.vim'
 
 "
 " Check for uninstalled bundles
@@ -130,7 +130,7 @@ set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLo
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
 " Solarized stuff
 let g:solarized_termcolors=16
-set background=light
+set background=dark
 colorscheme solarized
 
 " set auto read buffers
@@ -225,48 +225,9 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " Replace current selected text, on current buffer
 nnoremap <leader>sr :%s///g<left><left>
 
-"""
-""" Buffer Manipulation
-"""
-" Opens buffer list
-nnoremap <leader>b :buffers<CR>:buffer<Space>
-" Save all buffers and change tabs for spaces
-nnoremap <leader>ss :wa<CR>
-"nnoremap <leader>ss :retab<CR> :wa<CR>
-" Save all buffers and quit
-nnoremap <leader>sq :xa<CR>
-" Close pane
-nnoremap <leader>qq :q<CR>
-
 
 " rubocop auto correct buffer
-nnoremap <leader>wb :let lineNumber = line('.') <cr> :%!rubocop -a -s  % <cr> :0,5d <cr> :execute lineNumber <cr>
-
-"""
-""" Text Manipulation
-"""
-" Use enter, and shift enter to add a new line in exec mode
-nnoremap <S-Enter> O<Esc>j
-
-"""
-""" Git
-"""
-nnoremap <leader>gnb :!git checkcout -b
-nnoremap <leader>gcm :!git checkout master<CR>
-nnoremap <leader>gc :!git commit -am ''<left>
-nnoremap <leader>gs :!git status<CR>
-nnoremap <leader>ga :!git add .<CR>
-nnoremap <leader>gp :!git push<CR>
-nnoremap <leader>gm :!git merge
-
-"""
-""" Misc.
-"""
-" Edit vimrc
-nnoremap <leader>ve :e ~/.vimrc<CR>
-" Reload vim
-nnoremap <leader>vr :source ~/.vimrc<CR>
-
+nnoremap <leader>wb :w <cr> :let lineNumber = line('.') <cr> :%!rubocop -a -s  % <cr> /====================<cr> dgg <cr> :execute lineNumber <cr><cr> :w <cr>
 
 """
 """ Spelling
@@ -285,24 +246,12 @@ map <leader>zt :set spell!<cr>
 " Apply first correction
 map <leader>zz 1z=
 
-"" Running specs
-
-"let g:rspec_command = 'compiler rspec | set makeprg=spring | Make rspec {spec}'
-"let g:rspec_command = '!bin/rails test {spec}'
-
 let test#strategy = "dispatch"
 nnoremap <Leader>sf  :w <bar> :TestFile<CR>
 nnoremap <Leader>s.  :w <bar> :TestNearest<CR>
 nnoremap <Leader>sd  :w <bar> :TestLast<CR>
 nnoremap <Leader>sa  :w <bar> :TestSuite<CR>
 nnoremap <Leader>sv  :w <bar> :TestVisit<CR>
-
-" Minitest
-"nnoremap <Leader>sf :w <bar> :Dispatch bin/rails test %<CR>
-"nnoremap <Leader>s. :w <bar> :Dispatch bin/rails test %:<C-r>=line('.')<cr><cr>
-
-" Get me some pry
-nnoremap <leader>bp Obinding.pry<esc>:w<cr>
 
 "" vim.rails key maps
 nnoremap <Leader>rm :Rmodel
@@ -313,61 +262,7 @@ nnoremap <Leader>rmi :Rmigration
 nnoremap <Leader>rr :R<cr>
 vnoremap <Leader>re :Rextract
 
-"" Tabularize micode
-nnoremap <Leader>' :Tab<cr>
-vnoremap <Leader>' :Tab<cr>
-nnoremap <Leader>'{ :Tab /^[^{]*\zsl{<cr>
-vnoremap <Leader>'{ :Tab /^[^{]*\zsl{<cr>
-nnoremap <Leader>'r :Tab /^[^=>]*\zs=><cr>
-vnoremap <Leader>'r :Tab /^[^=>]*\zs=><cr>
-nnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
-vnoremap <Leader>'= :Tab /^[^=]*\zs=<cr>
-nnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
-vnoremap <Leader>'' :Tab /^[^']*\zs'/l1l0<cr>
-
-
 set re=1 "set regex engine to older one, might speedup vim
-
-""" Select Functions and Mappings
-" Run a given vim command on the results of fuzzy selecting from a given shell
-" command. See usage below.
-"function! SelectaCommand(choice_command, selecta_args, vim_command)
-"try
-"let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-"catch /Vim:Interrupt/
-"" Swallow the ^C so that the redraw below happens; otherwise there will be
-"" leftovers from selecta on the screen
-"redraw!
-"return
-"endtry
-"redraw!
-"exec a:vim_command . " " . selection
-"endfunction
-
-"" Find all files in all non-dot directories starting in the working directory.
-"" Fuzzy select one of those. Open the selected file with :e.
-"nnoremap <c-p> :call SelectaCommand("find * -type f", "", ":e")<cr>
-
-"" Find files under the cursor
-"function! SelectaIdentifier()
-"" Yank the word under the cursor into the z register
-"normal "zyiw
-"" Fuzzy match files in the current directory, starting with the word under
-"" the cursor
-"call SelectaCommand("find * -type f", "-s " . @z, ":e")
-"endfunction
-"nnoremap <leader>p :call SelectaIdentifier()<cr>
-
-" Refactoring Shortcuts
-:nnoremap <leader>rap  :RAddParameter<cr>
-:nnoremap <leader>rcpc :RConvertPostConditional<cr>
-:nnoremap <leader>rel  :RExtractLet<cr>
-:vnoremap <leader>rec  :RExtractConstant<cr>
-:vnoremap <leader>relv :RExtractLocalVariable<cr>
-:nnoremap <leader>rit  :RInlineTemp<cr>
-:vnoremap <leader>rrlv :RRenameLocalVariable<cr>
-:vnoremap <leader>rriv :RRenameInstanceVariable<cr>
-:vnoremap <leader>rem  :RExtractMethod<cr>
 
 "Insert mode shortcuts
 inoremap II <Esc>I
@@ -395,23 +290,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['mri']
 
-" Angular maps
-nnoremap <leader>as :e app/assets/javascripts/angular/services/
-nnoremap <leader>ac :e app/assets/javascripts/angular/controllers/
-nnoremap <leader>aa :e app/assets/javascripts/angular/
-
 " Airline config
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_section_b = ''
 let g:airline_section_y = ''
-
-" Tab maps
-nmap <silent> tt :tabnew<CR>
-nmap <silent> [g :tabprevious<CR>
-nmap <silent> ]g :tabnext<CR>
-nmap <silent> [G :tabrewind<CR>
-nmap <silent> ]G :tablast<CR>
 
 " assync ctags
 let g:easytags_async = 1
@@ -420,23 +303,6 @@ let g:easytags_async = 1
 if filereadable(glob(".vimrc.local"))
     source .vimrc.local
 endif
-
-" \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-" ctrl p
-let g:ctrlp_working_path_mode = 'r'
-let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\.git\|node_modules\|bin\|\.hg\|\.svn\|build\|log\|resources\|spec/vcr\|coverage\|doc\|tmp\|public/assets\|vendor\|Android',
-      \ 'file': '\v\.(exe|so|dll)$',
-      \ }
-let g:ctrlp_cmd = 'CtrlPMixed'
-nnoremap <space> :CtrlPTag<cr>
-
-" ctrlp current word
-nmap ± :CtrlP<CR><C-\>w
-
-" abbreviations
-iab bp binding.pry
-iab db debugger
 
 " fast word search with ag
 noremap § :Ag! -Q <C-r>=expand('<cword>')<CR>
@@ -519,3 +385,8 @@ autocmd! BufWritePost * Neomake
 
 " Reformat json file
 nnoremap <leader>fj :%! json_reformat <cr>
+
+" FZF shortcuts
+nnoremap <space> :Files<cr>
+nnoremap <leader>m :Tags<cr>
+nnoremap <leader>n :BTags<cr>
