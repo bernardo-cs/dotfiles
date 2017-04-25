@@ -1,58 +1,52 @@
-"mxw/vim-jsx""""  NeoBundle Config
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-"call neobundle#rc(expand('~/.vim/bundle/'))
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
+call plug#begin('~/.vim/plugged')
+
 " My bundles here:
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'justinmk/vim-sneak'
-NeoBundle 'kien/rainbow_parentheses.vim'
-NeoBundle 'rust-lang/rust.vim'
-NeoBundle 'guns/vim-clojure-static'                " better clojure integration
-NeoBundle 'justinj/vim-react-snippets'     " React Snippets
-NeoBundle 'pangloss/vim-javascript'        "Better js highlight
-NeoBundle 'mxw/vim-jsx'                    "Better jsx highlight
-NeoBundle 'honza/vim-snippets'             "Some default snippets
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'tpope/vim-rails'                "Better Rails integration
-NeoBundle 'slim-template/vim-slim'
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'nelstrom/vim-visual-star-search' "Use # and * in visual mode
-NeoBundle 'vim-ruby/vim-ruby'              "Latest version of ruby tools
-NeoBundle 'mileszs/ack.vim'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'sjl/vitality.vim'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'vim-scripts/Auto-Pairs'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'Olical/vim-enmasse'
-NeoBundle 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
-NeoBundle 'airblade/vim-gitgutter'          " git changes on vim gutter
-NeoBundle 'tpope/vim-classpath'                " better find and gf for jvm projects
-NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'tpope/vim-obsession'             "session management
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'tpope/vim-dispatch'              " make async on another pane
-NeoBundle 'tpope/vim-fugitive'              " git wrapper
-NeoBundle 'tpope/vim-haystack'             " better fuzzy search
-NeoBundle 'tpope/vim-salve'                " leiningen support for vim
-NeoBundle 'tpope/vim-fireplace'                " clojure repl for vim
-NeoBundle 'mustache/vim-mustache-handlebars'
-NeoBundle 'leafgarland/typescript-vim'      "typescript support 
-NeoBundle 'janko-m/vim-test'      
-NeoBundle 'editorconfig/editorconfig-vim'
-NeoBundle 'neomake/neomake' "async linting
-NeoBundle 'Shougo/vimproc', {
+
+Plug 'scrooloose/syntastic'
+Plug 'justinmk/vim-sneak'
+Plug 'Shougo/neocomplete'
+Plug 'osyo-manga/vim-monster'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'rust-lang/rust.vim'
+Plug 'guns/vim-clojure-static'                " better clojure integration
+Plug 'pangloss/vim-javascript'        "Better js highlight
+Plug 'mxw/vim-jsx'                    "Better jsx highlight
+Plug 'slim-template/vim-slim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'kchmck/vim-coffee-script'
+Plug 'nelstrom/vim-visual-star-search' "Use # and * in visual mode
+Plug 'vim-ruby/vim-ruby'              "Latest version of ruby tools
+Plug 'mileszs/ack.vim'
+Plug 'rking/ag.vim'
+Plug 'sjl/vitality.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'vim-scripts/Auto-Pairs'
+Plug 'altercation/vim-colors-solarized'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'Olical/vim-enmasse'
+Plug 'Keithbsmiley/rspec.vim'          " rspec syntax highlight and file identification
+Plug 'airblade/vim-gitgutter'          " git changes on vim gutter
+Plug 'tpope/vim-rails'                "Better Rails integration
+Plug 'tpope/vim-classpath'                " better find and gf for jvm projects
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-obsession'             "session management
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-dispatch'              " make async on another pane
+Plug 'tpope/vim-fugitive'              " git wrapper
+Plug 'tpope/vim-haystack'             " better fuzzy search
+Plug 'tpope/vim-salve'                " leiningen support for vim
+Plug 'tpope/vim-fireplace'                " clojure repl for vim
+Plug 'tpope/vim-rbenv'                " clojure repl for vim
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'leafgarland/typescript-vim'      "typescript support 
+Plug 'janko-m/vim-test'      
+Plug 'editorconfig/editorconfig-vim'
+Plug 'neomake/neomake' "async linting
+Plug 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
       \     'cygwin' : 'make -f make_cygwin.mak',
@@ -63,13 +57,12 @@ NeoBundle 'Shougo/vimproc', {
 
 " Enable fzf
 set rtp+=/usr/local/opt/fzf
-NeoBundle 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim'
 
-"
-" Check for uninstalled bundles
-call neobundle#end()
+" Initialize plugin system
+call plug#end()
+
 filetype plugin indent on
-NeoBundleCheck
 
 set nocompatible                  " Must come first because it changes other options.
 
@@ -128,9 +121,31 @@ set laststatus=2                  " Show the status line all the time
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
 let g:airline_powerline_fonts = 1 " automatically populate the g:airline_symbols
+
+" Enable neocomplete
+let g:neocomplete#enable_at_startup = 1
+
+" Set async completion.
+let g:monster#completion#rcodetools#backend = "async_rct_complete"
+
+" With neocomplete.vim
+let g:neocomplete#sources#omni#input_patterns = {
+\   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
+\}
+
 " Solarized stuff
-let g:solarized_termcolors=16
-set background=dark
+if !has('gui_running')
+    " Compatibility for Terminal
+    let g:solarized_termtrans=1
+
+    if (&t_Co >= 256 || $TERM == 'xterm-256color')
+        " Do nothing, it handles itself.
+    else
+        " Make Solarized use 16 colors for Terminal support
+        let g:solarized_termcolors=16
+    endif
+endif
+set background=light
 colorscheme solarized
 
 " set auto read buffers
@@ -202,19 +217,6 @@ set clipboard=unnamed
 set nobackup
 set nowritebackup
 set noswapfile
-
-" Remove tab from youcompleteme
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_key_invoke_completion = '<Down>'
-
-" Let ultisnippets split my screen
-let g:UltiSnipsEditSplit="vertical"
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 """""""""""""""""""""""""""""""""""""""""""
 """"""     Personal shortcuts       """""""
@@ -307,9 +309,6 @@ endif
 " fast word search with ag
 noremap § :Ag! -Q <C-r>=expand('<cword>')<CR>
 
-" YCM use pyenv python
-let g:ycm_path_to_python_interpreter = '/Users/bersimoes/.pyenv/shims/python'
-
 " rails commands
 noremap <leader>rc :Dispatch bin/rails c <CR>
 noremap <leader>rdb :Dispatch bin/rails dbconsole <CR>
@@ -390,3 +389,27 @@ nnoremap <leader>fj :%! json_reformat <cr>
 nnoremap <space> :Files<cr>
 nnoremap <leader>m :Tags<cr>
 nnoremap <leader>n :BTags<cr>
+
+"Ruby close end
+if !exists( "*RubyEndToken" )
+
+  function RubyEndToken()
+    let current_line = getline( '.' )
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+    let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
+      let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+
+      if match(current_line, braces_at_end) >= 0
+        return "\<CR>}\<C-O>O"
+      elseif match(current_line, stuff_without_do) >= 0
+        return "\<CR>end\<C-O>O"
+      elseif match(current_line, with_do) >= 0
+        return "\<CR>end\<C-O>O"
+      else
+        return "\<CR>"
+      endif
+    endfunction
+
+endif
+
+imap <buffer> <CR> <C-R>=RubyEndToken()<CR>

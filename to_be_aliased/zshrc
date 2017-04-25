@@ -1,8 +1,8 @@
 #add hub over git
 eval "$(hub alias -s)"
 
-# add java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.8.0.jdk/Contents/Home
+# Export java home
+export JAVA_HOME="$(/usr/libexec/java_home)"
 
 #add rbenv
 eval "$(rbenv init - --no-rehash)"
@@ -129,3 +129,10 @@ export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/usr/local/opt/qt5/bin:$PATH"
+
+###-tns-completion-start-###
+if [ -f /Users/bersimoes/.tnsrc ]; then 
+    source /Users/bersimoes/.tnsrc 
+fi
+###-tns-completion-end-###
